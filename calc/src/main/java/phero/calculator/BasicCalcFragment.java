@@ -48,9 +48,16 @@ public class BasicCalcFragment extends Fragment implements View.OnClickListener 
   }
 
   private void setError(CalcTree.BUILD_ERROR err) {
-    equation = "";
-    screen.setText("ERROR");
-    error = true;
+    if (err == CalcTree.BUILD_ERROR.BERR_NONE) {
+      equation = getString(R.string.empty_equation);
+      screen.setText(equation);
+      error = false;
+    }
+    else {
+      equation = "";
+      screen.setText("ERROR");
+      error = true;
+    }
   }
 
   private void setAlpha(boolean a) {
@@ -168,13 +175,7 @@ public class BasicCalcFragment extends Fragment implements View.OnClickListener 
 
       // THE HEART: THE EVALUATE CASE
       case R.id.btnEquals:
-        CalcTree.BUILD_ERROR err = evaluate();
-        if (err != CalcTree.BUILD_ERROR.BERR_NONE) {
-          setError(err);
-        }
-        else {
-          setError(CalcTree.BUILD_ERROR.BERR_NONE);
-        }
+        setError(evaluate());
         break;
 
       case R.id.btnExponent:
